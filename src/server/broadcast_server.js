@@ -74,12 +74,22 @@ class BroadcastServer {
     return shv === ohv;
   };
 
+   /**
+   *  
+   * @param {BaseSession} session 
+   */
+  verifySession = (session) => {
+    Context.eventEmitter.emit("verifySession", session);
+  }
+
   /**
    * @param {BaseSession} session
    * @returns {string | null}
    */
   postPlay = (session) => {
     if (Context.config.auth?.play && session.ip !== "") {
+      this.verifySession(session); // allow developers to validate as well.
+      
       if (!this.verifyAuth(Context.config.auth?.secret, session)) {
         return `play stream ${session.streamPath} authentication verification failed`;
       }
@@ -143,6 +153,8 @@ class BroadcastServer {
    */
   postPublish = (session) => {
     if (Context.config.auth?.publish) {
+      this.verifySession(session); // allow developers to validate as well.
+      
       if (!this.verifyAuth(Context.config.auth?.secret, session)) {
         return `publish stream ${session.streamPath} authentication verification failed`;
       }
