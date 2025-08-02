@@ -52,6 +52,10 @@ class RtmpSession extends BaseSession {
    * @param {object} req.query 
    */
   onConnect = (req) => {
+    if (Context.config.rtmp?.auth) {
+      this.broadcast.verifySession(this);
+    }
+
     this.streamApp = req.app;
     this.streamName = req.name;
     this.streamHost = req.host;
@@ -137,13 +141,6 @@ class RtmpSession extends BaseSession {
   sendBuffer = (buffer) => {
     this.outBytes += buffer.length;
     this.socket.write(buffer);
-  };
-
-  /**
-   * @override
-   */
-  close = () => {
-    this.socket.end();
   };
 }
 

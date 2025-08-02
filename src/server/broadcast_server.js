@@ -74,13 +74,13 @@ class BroadcastServer {
     return shv === ohv;
   };
 
-   /**
-   *  
-   * @param {BaseSession} session 
+  /**
+   *
+   * @param {BaseSession} session
    */
   verifySession = (session) => {
     Context.eventEmitter.emit("verifySession", session);
-  }
+  };
 
   /**
    * @param {BaseSession} session
